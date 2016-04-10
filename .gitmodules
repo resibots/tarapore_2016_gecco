@@ -1,3 +1,6 @@
 [submodule "sferes2"]
 	path = sferes2
 	url = http://github.com/sferes2/sferes2
+[submodule "modules/nn2"]
+	path = modules/nn2
+	url = http://github.com/sferes2/nn2
