@@ -1,0 +1,9 @@
+{
+   "email" : "daneshtarapore@gmail.com",
+   "wall_time" : "23:59:59",
+   "nb_runs": 5,
+   "bin_dir": "/home/tarapore/svn_isir/sferes2/trunk/build/default/exp/hexa_coupledcpgwithfb_hyperneat",
+   "res_dir": "/home/tarapore/exp",
+   "exps" : ["hexa_coupledcpgwithfb_hyperneat_text"]
+}
+
