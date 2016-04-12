@@ -4,3 +4,6 @@
 [submodule "modules/nn2"]
 	path = modules/nn2
 	url = http://github.com/sferes2/nn2
+[submodule "robdyn"]
+	path = robdyn
+	url = https://github.com/resibots/robdyn.git
