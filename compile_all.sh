@@ -28,7 +28,7 @@ ln -s ../../robdyn/sferes/robdyn
 cd ..
 echo "robdyn" > modules.conf
 # yes, we use eigen2...
-./waf configure --robdyn=$INSTALL --robdyn-osg=$OSG --eigen3=/usr/include/eigen3
+./waf configure --robdyn=$INSTALL --robdyn-osg=$OSG --eigen=/usr/include/eigen2
 
 ./waf
 
