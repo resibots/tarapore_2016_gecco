@@ -23,12 +23,12 @@ pwd
 cd sferes2/exp
 ln -s ../../exp/* .
 cd ../modules
-ln -s ../../modules/nn2
-ln -s ../../robdyn/sferes/robdyn
+ln -s ../../modules/* .
 cd ..
 echo "robdyn" > modules.conf
+
 # yes, we use eigen2...
-./waf configure --robdyn=$INSTALL --robdyn-osg=$OSG --eigen=/usr/include/eigen2
+./waf configure --boost-libs=/usr/lib/x86_64-linux-gnu/ --robdyn=$INSTALL --robdyn-osg=$OSG --eigen=/usr/include/eigen3
 
 ./waf
 
