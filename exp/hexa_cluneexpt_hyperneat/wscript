@@ -3,9 +3,11 @@ import sferes
 
 def build(bld):
     osg = not bld.all_envs['default']['NO_OSG']
+
     #libs = 'EIGEN2 ROBDYN BOOST ODE BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM ROS DYNAMIXEL IMU_RAZOR '
     libs = 'EIGEN3 ROBDYN  BOOST BOOST_TIMER ODE BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM ROS DYNAMIXEL IMU_RAZOR ROS BAYESIAN_OPTIMIZATION BOOST_CHRONO RT'
     cxxflags = bld.get_env()['CXXFLAGS']
+    print cxxflags
     if osg:
         libs += ' OSG'
 
@@ -15,12 +17,13 @@ def build(bld):
     model.target = 'hexapod'
     model.uselib = libs
 
-    modelg = bld.new_task_gen('cxx', 'staticlib')
-    modelg.source = 'hexapod.cc simu.cpp controllerPhase.cpp '
-    modelg.includes = '. ../../'
-    modelg.target = 'hexapodg'
-    modelg.uselib = libs
-    modelg.cxxflags = cxxflags = ['-DGRAPHIC' ]
+    if osg:
+        modelg = bld.new_task_gen('cxx', 'staticlib')
+        modelg.source = 'hexapod.cc simu.cpp controllerPhase.cpp '
+        modelg.includes = '. ../../'
+        modelg.target = 'hexapodg'
+        modelg.uselib = libs
+        modelg.cxxflags = cxxflags + ['-DGRAPHIC' ] + ['-fpermissive']
 
 
     sferes.create_variants(bld,

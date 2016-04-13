@@ -27,8 +27,7 @@ ln -s ../../modules/* .
 cd ..
 echo "robdyn" > modules.conf
 
-# yes, we use eigen2...
-./waf configure --boost-libs=/usr/lib/x86_64-linux-gnu/ --robdyn=$INSTALL --robdyn-osg=$OSG --eigen=/usr/include/eigen3
+CXXFLAGS='-fpermissive' ./waf configure --cpp11=yes --boost-libs=/usr/lib/x86_64-linux-gnu/ --robdyn=$INSTALL --eigen=/usr/include/eigen3
 
 ./waf
 
