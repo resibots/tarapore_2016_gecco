@@ -119,8 +119,7 @@ SFERES_EA(MapElite, Ea)
             indiv = boost::shared_ptr<Phen>(new Phen());
             indiv->random();
         }
-        //this->_eval.eval(this->_pop, 0, this->_pop.size());
-        this->_eval_pop(this->_pop, 0, this->_pop.size());
+        this->_eval.eval(this->_pop, 0, this->_pop.size());
         BOOST_FOREACH(boost::shared_ptr<Phen>&indiv, this->_pop)
                 _add_to_archive(indiv, indiv);
     }
@@ -166,8 +165,7 @@ SFERES_EA(MapElite, Ea)
             p_parents.push_back(p1);
             p_parents.push_back(p2);
         }
-        //this->_eval.eval(ptmp, 0, ptmp.size());
-        this->_eval_pop(ptmp, 0, ptmp.size());
+        this->_eval.eval(ptmp, 0, ptmp.size());
 
         assert(ptmp.size() == p_parents.size());
         for (size_t i = 0; i < ptmp.size(); ++i)
@@ -193,8 +191,6 @@ SFERES_EA(MapElite, Ea)
 	    {
 	      point_t child_bd  = _get_point(ptmp[i]);
 	      point_t parent_bd = _get_point(p_parents[i]);
-	      /*std::vector <float> child_bd(ptmp[i]->fit().desc());
-		std::vector <float> parent_bd(p_parents[i]->fit().desc());*/
 
 	      behav_index_t behav_pos_child, behav_pos_parent;
 	      for(size_t dim = 0; dim < Params::ea::behav_shape_size(); ++dim)
@@ -347,7 +343,7 @@ SFERES_EA(MapElite, Ea)
 
     indiv_t _tournamentselection(const pop_t& pop)
     {
-        size_t tournament_size = 1; // tournament_size = 1 is equivalent to random selection
+        size_t tournament_size = 1; // 2;
 
         float bestfitness = -1.0;
         int bestindiv = -1;

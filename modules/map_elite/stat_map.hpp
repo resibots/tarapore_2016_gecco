@@ -63,14 +63,14 @@ SFERES_STAT(Map, Stat)
 
         if (ea.gen() % Params::pop::dump_period_logs == 0)
         {
-            //_write_archive_antoinestyle(ea.archive(), std::string("archive_"), ea); // For the Direct encoding
+            //_write_archive_antoinestyle(ea.archive(), std::string("archive_"), ea);
             _write_archive(ea.archive(), std::string("archive_"), ea);
             _write_progress(ea.archive(),std::string("progress_archive"), ea);
             _write_progress_performance(ea.archive(),std::string("progress_archive_actualperformance"), ea);
 #ifdef MAP_WRITE_PARENTS
             _write_parents(ea.archive(), ea.parents(), std::string("parents_"), ea);
 #endif
-            //_write_fitness_diversity_stats(std::string("diff_fitness_diversity_"), ea);
+            _write_fitness_diversity_stats(std::string("diff_fitness_diversity_"), ea); 
         }
     }
 
