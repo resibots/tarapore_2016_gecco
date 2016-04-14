@@ -9,7 +9,7 @@ To compile this repository:
 
 Please note that he map-elites module is not the standard one (because this code is older than the release of the 'official' map-elites module).
 
-## Authors
+### Authors
 - Danesh Tarapore (University of York) -- danesh.tarapore@york.ac.uk
 - Jean-Baptiste Mouret (Inria) -- jean-baptiste.mouret@inria.fr
 - Antoine Cully (Imperial College) -- a.cully@imperial.ac.uk
