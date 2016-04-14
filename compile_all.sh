@@ -19,6 +19,7 @@ mkdir install
 cd robdyn
 ./waf configure  --disable_osg=$NO_OSG --prefix=$INSTALL
 ./waf install
+./waf install # yes, we do it again
 cd ..
 
 #### sferes
