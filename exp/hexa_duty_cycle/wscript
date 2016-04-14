@@ -3,7 +3,7 @@ import sferes
 
 def build(bld):
     osg = not bld.all_envs['default']['NO_OSG']
-    libs = 'ODE ROBDYN EIGEN2 BOOST  ROS BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM DYNAMIXEL IMU_RAZOR '
+    libs = 'ODE ROBDYN EIGEN3 BOOST  ROS BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM DYNAMIXEL IMU_RAZOR '
     cxxflags = bld.get_env()['CXXFLAGS']
 #    if osg:
 #        libs += ' OSG'

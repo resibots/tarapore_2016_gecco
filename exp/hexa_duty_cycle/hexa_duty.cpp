@@ -3,7 +3,7 @@
 #define EIGEN_USE_NEW_STDVECTOR
 #include <Eigen/StdVector>
 #include <Eigen/Core>
-#include <Eigen/Array>
+//#include <Eigen/Array>
 #include <time.h>
 #include <netinet/in.h>
 //#define NO_WHEEL
