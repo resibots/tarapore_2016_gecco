@@ -51,11 +51,6 @@ public:
 
         _robot = robot->clone(*_env);
 
-#ifdef GRAPHIC
-        _robot->accept(_visitor);
-        std::string prefix = "frame";
-        _visitor.enable_dump(prefix);
-#endif
 
         _env->set_gravity(0, 0, -9.81);
         _env->resetGRF();
@@ -106,17 +101,17 @@ public:
         return _covered_distance;
     }
 
-    std::vector<float> get_orientation_bd(float perc_threshold)
-    {
-        std::vector<float> results;
-        results.push_back(countofvector(pitch_vec , (perc_threshold / 100.0) * M_PI, true));
-        results.push_back(countofvector(pitch_vec , (perc_threshold / 100.0) * M_PI, false));
-        results.push_back(countofvector(roll_vec , (perc_threshold / 100.0) * M_PI, true));
-        results.push_back(countofvector(roll_vec , (perc_threshold / 100.0) * M_PI, false));
-        results.push_back(countofvector(yaw_vec , (perc_threshold / 100.0) * M_PI, true));
-        results.push_back(countofvector(yaw_vec , (perc_threshold / 100.0) * M_PI, false));
-        return results;
-    }
+  std::vector<float> get_orientation_bd(float perc_threshold)
+  {
+    std::vector<float> results;
+    results.push_back(countofvector(pitch_vec , (perc_threshold / 100.0) * M_PI, true));
+    results.push_back(countofvector(pitch_vec , (perc_threshold / 100.0) * M_PI, false));
+    results.push_back(countofvector(roll_vec , (perc_threshold / 100.0) * M_PI, true));
+    results.push_back(countofvector(roll_vec , (perc_threshold / 100.0) * M_PI, false));
+    results.push_back(countofvector(yaw_vec , (perc_threshold / 100.0) * M_PI, true));
+    results.push_back(countofvector(yaw_vec , (perc_threshold / 100.0) * M_PI, false));
+    return results;
+  }
 
 
     float slam_duration()

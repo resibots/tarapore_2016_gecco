@@ -93,7 +93,7 @@ struct Params
 
         // size of a batch - evaluations to be run in parallel. could be about 64 (number of cores on cluster).
         SFERES_CONST size_t size = 200; //200  was Using the same parameters as Antoine to compare results //64
-        SFERES_CONST size_t nb_gen = 200001; //100001; // number of evaluations is nb_gen * size of batch
+        SFERES_CONST size_t nb_gen = 25001;//200001; //100001; // number of evaluations is nb_gen * size of batch
 
         static constexpr int dump_period = 1000; //50  //logs are written every dump_period of 5001 generations
         static constexpr int dump_period_logs = 50; //50  //logs are written every dump_period of 5001 generations
@@ -399,25 +399,25 @@ FIT_MAP(FitGrid)
                                        std::min(simu.amp_z / MAX_AMPLITUDE, 1.0f)};
 #else
             /*==========Duty factor behavior descriptor ============ */
-            /*std::vector<float> data = {(float)round((sumofvector(legs_features[0]) / (float)legs_features[0].size()) * 100.0f) / 100.0f,
+	    /*            std::vector<float> data = {(float)round((sumofvector(legs_features[0]) / (float)legs_features[0].size()) * 100.0f) / 100.0f,
                                (float)round((sumofvector(legs_features[1]) / (float)legs_features[1].size()) * 100.0f) / 100.0f,
                                (float)round((sumofvector(legs_features[2]) / (float)legs_features[2].size()) * 100.0f) / 100.0f,
                                (float)round((sumofvector(legs_features[3]) / (float)legs_features[3].size()) * 100.0f) / 100.0f,
                                (float)round((sumofvector(legs_features[4]) / (float)legs_features[4].size()) * 100.0f) / 100.0f,
-                               (float)round((sumofvector(legs_features[5]) / (float)legs_features[5].size()) * 100.0f) / 100.0f};*/
+                               (float)round((sumofvector(legs_features[5]) / (float)legs_features[5].size()) * 100.0f) / 100.0f}; */
             /*========================================================*/
 
 
             /*==========Orientation behavior descriptor ============ */
-                        //using main body orientation behavior descriptor
-                        float perc_threshold = 0.5f; // > +perc_threshold is considered +ve // < -perc_threshold is considered -ve
-                        std::vector<float> data = simu.get_orientation_bd(perc_threshold);
+            //            using main body orientation behavior descriptor
+            /*              float perc_threshold = 0.5f; // > +perc_threshold is considered +ve // < -perc_threshold is considered -ve
+			    std::vector<float> data = simu.get_orientation_bd(perc_threshold); */
             /*========================================================*/
 
 
 
             /*==========Relative GRF behavior descriptor ============ */
-            /*std::vector <float> grf_eachleg = sumsof2Dvector(simu.grf_z);
+	    std::vector <float> grf_eachleg = sumsof2Dvector(simu.grf_z);
             assert(grf_eachleg.size() == 6);
 
             float total_force = sumofvector(grf_eachleg);
@@ -442,8 +442,6 @@ FIT_MAP(FitGrid)
                 return;
             }
 
-            //std::cout <<  std::endl << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << grf_eachleg[0] << "  " << total_force << std::endl;
-
             float rel_grd_0 = std::max(grf_eachleg[0] / total_force, 0.0f); // the z component of the GRF sometimes takes very small negative values (< 0.01)
             float rel_grd_1 = std::max(grf_eachleg[1] / total_force, 0.0f);
             float rel_grd_2 = std::max(grf_eachleg[2] / total_force, 0.0f);
@@ -452,10 +450,7 @@ FIT_MAP(FitGrid)
             float rel_grd_5 = std::max(grf_eachleg[5] / total_force, 0.0f);
 
 
-            std::vector<float> data = {rel_grd_0, rel_grd_1, rel_grd_2, rel_grd_3, rel_grd_4, rel_grd_5};*/
-
-
-
+            std::vector<float> data = {rel_grd_0, rel_grd_1, rel_grd_2, rel_grd_3, rel_grd_4, rel_grd_5};
             /*========================================================*/
 #endif
 
@@ -525,7 +520,6 @@ int main(int argc, char **argv)
     typedef ea::MapElite<phen_t, eval_t, stat_t, modifier_t, Params> ea_t;
 
     ea_t ea;
-    //fit_t tmp = ea._fit_proto;
 
     //initilisation of the simulation and the simulated robot
     if(argc>7)
@@ -536,9 +530,7 @@ int main(int argc, char **argv)
     init_simu(argc, argv, true);
 
     std::cout<<"debut run"<<std::endl;
-    run_ea(argc, argv, ea);//, fit_t());
-    //ea.run();    
-
+    run_ea(argc, argv, ea);
     std::cout <<"fin run"<<std::endl;
 
     global::robot.reset();

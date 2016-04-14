@@ -18,7 +18,7 @@ public:
         {
             env.add_leg_object((i-1)/3,*_bodies[i]);
             if (i%3 == 0)
-                env.add_leglastsubsegment_object(*_bodies[i]); // for grf bd
+	      env.add_leglastsubsegment_object(*_bodies[i]);
         }
     }
     boost::shared_ptr<Hexapod> clone(ode::Environment_hexa& env) const

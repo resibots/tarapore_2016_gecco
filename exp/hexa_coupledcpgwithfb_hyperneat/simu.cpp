@@ -125,8 +125,6 @@ void Simu ::_make_robot_init(float duration)
         for(size_t leg=0;leg<6;++leg)
         {
             tmp_grf_x.push_back(_env->getGRF(leg)[0]); tmp_grf_y.push_back(_env->getGRF(leg)[1]); tmp_grf_z.push_back(_env->getGRF(leg)[2]);
-            //_env->printGRF();
-            //std::cout << " Leg " << leg << "  " << _env->getGRF(leg)[2] << std::endl;
         }
         grf_x.push_back(tmp_grf_x); grf_y.push_back(tmp_grf_y); grf_z.push_back(tmp_grf_z);
 
@@ -152,8 +150,7 @@ void Simu ::_make_robot_init(float duration)
     _final_pos[1]=next_pos[1];
 
     //_covered_distance = round(sqrt(next_pos[0]*next_pos[0]+next_pos[1]*next_pos[1]/*+next_pos[2]*next_pos[2]*/)*100) / 100.0f;
-
-    _covered_distance = round(_final_pos[1]*100) / 100.0f; // taking only the y-component of the distance travelled            
+    _covered_distance = round(_final_pos[1]*100) / 100.0f; // taking only the y-component of the distance travelled
     _direction=atan2(-next_pos[0],next_pos[1])*180/M_PI;
     rot=rob->rot();
     _arrival_angle= atan2( cos(rot[2])* sin(rot[1])* sin(rot[0])

@@ -14,6 +14,7 @@ void Simu ::_make_robot_init(float duration)
     _arrival_angle= atan2( cos(rot[2])* sin(rot[1])* sin(rot[0]) + sin(rot[2])* cos(rot[0]), cos(rot[2])* cos(rot[1]))*180/M_PI;
 
     // recording angles output by cppn separately for the FFT
+    angles_forfft.clear();
     angles_forfft.push_back(_controller.moveRobot(rob,0,step));
 
     float t=0;
@@ -24,7 +25,7 @@ void Simu ::_make_robot_init(float duration)
     while (t < duration)
 #endif
     {
-        _controller.moveRobot(rob,t,step);
+        angles_forfft.push_back(_controller.moveRobot(rob,t,step));
 
         if(_robot->bodies()[0]->get_in_contact() || _env->get_colision_between_legs())
         {//Death if robot body touches ground or if legs collide
@@ -153,8 +154,8 @@ void Simu ::_make_robot_init(float duration)
     _final_pos[1]=next_pos[1];
 
     //_covered_distance = round(sqrt(next_pos[0]*next_pos[0]+next_pos[1]*next_pos[1]/*+next_pos[2]*next_pos[2]*/)*100) / 100.0f;
-  
-    _covered_distance = round(_final_pos[1]*100) / 100.0f; // taking only the y-component of the distance travelled             
+    _covered_distance = round(_final_pos[1]*100) / 100.0f; // taking only the y-component of the distance travelled
+
     _direction=atan2(-next_pos[0],next_pos[1])*180/M_PI;
     rot=rob->rot();
     _arrival_angle= atan2( cos(rot[2])* sin(rot[1])* sin(rot[0])

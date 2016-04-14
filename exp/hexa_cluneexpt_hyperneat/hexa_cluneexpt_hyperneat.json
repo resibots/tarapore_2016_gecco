@@ -1,9 +1,0 @@
-{
-   "email" : "daneshtarapore@gmail.com",
-   "wall_time" : "00:59:59",
-   "nb_runs": 12,
-   "bin_dir": "/home/tarapore/svn_isir/sferes2/trunk/build/default/exp/hexa_cluneexpt_hyperneat",
-   "res_dir": "/home/tarapore/exp/cluneexpt_dangeom1",
-   "exps" : ["hexa_cluneexpt_hyperneat_text"]
-}
-

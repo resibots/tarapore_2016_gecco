@@ -14,13 +14,6 @@ def build(bld):
     model.target = 'hexapod'
     model.uselib = libs
 
-    modelg = bld.new_task_gen('cxx', 'staticlib')
-    modelg.source = 'hexapod.cc simu.cpp controllerPhase.cpp '
-    modelg.includes = '. ../../'
-    modelg.target = 'hexapodg'
-    modelg.uselib = libs
-    modelg.cxxflags = cxxflags = ['-DGRAPHIC' ]
-
 
     sferes.create_variants(bld,
                            source = 'hexa_coupledcpgwithfb_hyperneat.cpp',
@@ -37,27 +30,4 @@ def build(bld):
                            target = 'coupledcpgwithfb_mapelite',
                            json = '',
                            variants = ['TEXT'])#, 'ROBOT'])
-
-
-    if osg:
-        print 'osg activated'
-        sferes.create_variants(bld,
-                           source = 'hexa_coupledcpgwithfb_hyperneat.cpp',
-                           uselib_local = 'sferes2 hexapodg ',
-                           uselib = libs,
-                           target = 'hexa_coupledcpgwithfb_hyperneat',
-                           json = '',
-                           variants = ['GRAPHIC'])
-
-
-    if osg:
-        print 'osg activated'
-        sferes.create_variants(bld,
-                           source = 'coupledcpgwithfb_mapelite.cpp',
-                           uselib_local = 'sferes2 hexapodg ',
-                           uselib = libs,
-                           target = 'coupledcpgwithfb_mapelite',
-                           json = '',
-                           variants = ['GRAPHIC'])
-
 

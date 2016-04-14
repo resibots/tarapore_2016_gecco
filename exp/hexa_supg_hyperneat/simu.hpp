@@ -84,7 +84,7 @@ public:
 
         _env->set_gravity(0, 0, -9.81);
 
-        _env->resetGRF();
+	_env->resetGRF();
 
         try
         {
@@ -107,7 +107,7 @@ public:
     {
         // we have to clean in the good order
         _robot.reset();
-        _env->resetGRF();
+	_env->resetGRF();
         _env.reset();
 
     }
@@ -137,18 +137,18 @@ public:
         return _slam_duration;
     }
 
-    std::vector <float> get_rel_grf_bd(std::vector <float> &grf_eachleg, float total_force)
-    {
-        // total_force is the net GRF across all six legs
-        std::vector<float> results;
-        results.push_back(std::max(grf_eachleg[0] / total_force, 0.0f)); // the z component of the GRF sometimes takes very small negative values (< 0.01)
-        results.push_back(std::max(grf_eachleg[1] / total_force, 0.0f));
-        results.push_back(std::max(grf_eachleg[2] / total_force, 0.0f));
-        results.push_back(std::max(grf_eachleg[3] / total_force, 0.0f));
-        results.push_back(std::max(grf_eachleg[4] / total_force, 0.0f));
-        results.push_back(std::max(grf_eachleg[5] / total_force, 0.0f));
-        return results;
-    }
+   std::vector <float> get_rel_grf_bd(std::vector <float> &grf_eachleg, float total_force)
+   {
+    // total_force is the net GRF across all six legs
+    std::vector<float> results;
+    results.push_back(std::max(grf_eachleg[0] / total_force, 0.0f)); // the z component of the GRF sometimes takes very small negative values (< 0.01)
+    results.push_back(std::max(grf_eachleg[1] / total_force, 0.0f));
+    results.push_back(std::max(grf_eachleg[2] / total_force, 0.0f));
+    results.push_back(std::max(grf_eachleg[3] / total_force, 0.0f));
+    results.push_back(std::max(grf_eachleg[4] / total_force, 0.0f));
+    results.push_back(std::max(grf_eachleg[5] / total_force, 0.0f));
+    return results;
+   }
 
 
     std::vector<float> get_orientation_bd(float perc_threshold)
@@ -369,28 +369,28 @@ protected:
 
 
             if((_duty_factor_s0[0] < 0.0001) || (_duty_factor_s0[1] < 0.0001) || (_duty_factor_s0[2] < 0.0001) ||
-                    (_duty_factor_s0[3] < 0.0001) || (_duty_factor_s0[4] < 0.0001) || (_duty_factor_s0[5] < 0.0001) ||
-                    (_duty_factor_s0[0] > 0.9999) || (_duty_factor_s0[1] > 0.9999) || (_duty_factor_s0[2] > 0.9999) ||
-                    (_duty_factor_s0[3] > 0.9999) || (_duty_factor_s0[4] > 0.9999) || (_duty_factor_s0[5] > 0.9999))
-            {//Death if duty factor is 1 or 0 - does not make sense and timer output gives nan values, frequency computed as 0 and frequency of gaits is high
+               (_duty_factor_s0[3] < 0.0001) || (_duty_factor_s0[4] < 0.0001) || (_duty_factor_s0[5] < 0.0001) ||
+               (_duty_factor_s0[0] > 0.9999) || (_duty_factor_s0[1] > 0.9999) || (_duty_factor_s0[2] > 0.9999) ||
+               (_duty_factor_s0[3] > 0.9999) || (_duty_factor_s0[4] > 0.9999) || (_duty_factor_s0[5] > 0.9999))
+	      {//Death if duty factor is 1 or 0 - does not make sense and timer output gives nan values, frequency computed as 0 and frequency of gaits is high
 #ifdef GRAPHIC
-                std::cout<<"mort subite"<<std::endl;
+		std::cout<<"mort subite"<<std::endl;
 #endif
                 _covered_distance=-10002.0;
                 return;
-            }
+	      }
 
             if((_duty_factor_s1[0] < 0.0001) || (_duty_factor_s1[1] < 0.0001) || (_duty_factor_s1[2] < 0.0001) ||
-                    (_duty_factor_s1[3] < 0.0001) || (_duty_factor_s1[4] < 0.0001) || (_duty_factor_s1[5] < 0.0001) ||
-                    (_duty_factor_s1[0] > 0.9999) || (_duty_factor_s1[1] > 0.9999) || (_duty_factor_s1[2] > 0.9999) ||
-                    (_duty_factor_s1[3] > 0.9999) || (_duty_factor_s1[4] > 0.9999) || (_duty_factor_s1[5] > 0.9999))
-            {//Death if duty factor is 1 or 0 - does not make sense and timer output gives nan values, frequency computed as 0 and frequency of gaits is high
+               (_duty_factor_s1[3] < 0.0001) || (_duty_factor_s1[4] < 0.0001) || (_duty_factor_s1[5] < 0.0001) ||
+               (_duty_factor_s1[0] > 0.9999) || (_duty_factor_s1[1] > 0.9999) || (_duty_factor_s1[2] > 0.9999) ||
+               (_duty_factor_s1[3] > 0.9999) || (_duty_factor_s1[4] > 0.9999) || (_duty_factor_s1[5] > 0.9999))
+	      {//Death if duty factor is 1 or 0 - does not make sense and timer output gives nan values, frequency computed as 0 and frequency of gaits is high
 #ifdef GRAPHIC
-                std::cout<<"mort subite"<<std::endl;
+		std::cout<<"mort subite"<<std::endl;
 #endif
                 _covered_distance=-10002.0;
                 return;
-            }
+	      }
 
 
             /*if((_robot->bodies()[7]->get_pos()[2] > 0.27f) || (_robot->bodies()[10]->get_pos()[2] > 0.27f)) // z position of first subsegment of leg 2 or leg 3 is > 27cm. Indicates robot is flipping over
@@ -495,7 +495,7 @@ protected:
                 break;
 #endif
 
-            // std::cout << "x " << _robot->bodies()[10]->get_pos()[0] << " y " << _robot->bodies()[10]->get_pos()[1] << " z " << _robot->bodies()[10]->get_pos()[2] << std::endl << std::endl; // 10 is first subsegment of leg 3. we print its position
+        // std::cout << "x " << _robot->bodies()[10]->get_pos()[0] << " y " << _robot->bodies()[10]->get_pos()[1] << " z " << _robot->bodies()[10]->get_pos()[2] << std::endl << std::endl; // 10 is first subsegment of leg 3. we print its position
 
 
             //#if !defined SIMU && !defined NOSTOP
@@ -519,16 +519,13 @@ protected:
             next_step();
 
 
-            /*== STORING DATA FOR DIFFERENT BEHAVIOR DESCRIPTORS ==*/
-            std::vector <float> tmp_grf_x, tmp_grf_y, tmp_grf_z, tmp_grf_angle_yz, tmp_grf_angle_xz;
-            for(size_t leg=0;leg<6;++leg)
-            {
-                tmp_grf_x.push_back(_env->getGRF(leg)[0]); tmp_grf_y.push_back(_env->getGRF(leg)[1]); tmp_grf_z.push_back(_env->getGRF(leg)[2]);
-
-                //_env->printGRF();
-                //std::cout << " Leg " << leg << "  " << _env->getGRF(leg)[2] << std::endl;
-            }
-            grf_x.push_back(tmp_grf_x); grf_y.push_back(tmp_grf_y); grf_z.push_back(tmp_grf_z);
+	    /*== STORING DATA FOR DIFFERENT BEHAVIOR DESCRIPTORS ==*/
+	    std::vector <float> tmp_grf_x, tmp_grf_y, tmp_grf_z, tmp_grf_angle_yz, tmp_grf_angle_xz;
+	    for(size_t leg=0;leg<6;++leg)
+	      {
+		tmp_grf_x.push_back(_env->getGRF(leg)[0]); tmp_grf_y.push_back(_env->getGRF(leg)[1]); tmp_grf_z.push_back(_env->getGRF(leg)[2]);
+	      }
+	    grf_x.push_back(tmp_grf_x); grf_y.push_back(tmp_grf_y); grf_z.push_back(tmp_grf_z);
 
             ++index;
         }
@@ -578,24 +575,24 @@ protected:
         float min_x = INFINITY, min_y = INFINITY, min_z = INFINITY, max_x = -INFINITY, max_y = -INFINITY, max_z = -INFINITY;
         float tmp_time = 0.0;
         for(size_t i = 0; i < _behavior_traj.size(); ++i)
-        {
+	  {
             if (_behavior_traj[i][0] <= min_x)
-                min_x = _behavior_traj[i][0];
+	      min_x = _behavior_traj[i][0];
             if (_behavior_traj[i][2] <= min_z)
-                min_z = _behavior_traj[i][2];
+	      min_z = _behavior_traj[i][2];
             if (_behavior_traj[i][0] > max_x)
-                max_x = _behavior_traj[i][0];
+	      max_x = _behavior_traj[i][0];
             if (_behavior_traj[i][2] > max_z)
-                max_z = _behavior_traj[i][2];
+	      max_z = _behavior_traj[i][2];
 
             float diff_theory = _behavior_traj[i][1] - (_behavior_traj[_behavior_traj.size()-1][1] / duration * tmp_time);
             if (diff_theory <= min_y)
-                min_y = diff_theory;
+	      min_y = diff_theory;
             if (diff_theory > max_y)
-                max_y = diff_theory;
+	      max_y = diff_theory;
 
             tmp_time+=step;
-        }
+	  }
         amp_x = (max_x - min_x) * 0.95f; // 95% of range to avoid outliers
         amp_y = (max_y - min_y) * 0.95f;
         amp_z = (max_z - min_z) * 0.95f;
@@ -605,40 +602,40 @@ protected:
 
         // detecting if a robot has flipped over
         {
-            for (size_t s = 0; s < 25 && !(_robot->bodies()[0]->get_in_contact()); ++s)
+	  for (size_t s = 0; s < 25 && !(_robot->bodies()[0]->get_in_contact()); ++s)
             {
-                size_t leg = 0;
-                for (size_t i = 0; i < _robot->servos().size(); i+=3)
+	      size_t leg = 0;
+	      for (size_t i = 0; i < _robot->servos().size(); i+=3)
                 {
-                    for (int j=0;j<_brokenLegs.size();j++)
+		  for (int j=0;j<_brokenLegs.size();j++)
                     {
-                        if (leg==_brokenLegs[j])
+		      if (leg==_brokenLegs[j])
                         {
-                            leg++;
-                            if (_brokenLegs.size()>j+1 && _brokenLegs[j+1]!=leg)
-                                break;
+			  leg++;
+			  if (_brokenLegs.size()>j+1 && _brokenLegs[j+1]!=leg)
+			    break;
                         }
                     }
 
-                    _robot->servos()[i]->set_angle(0,   0.0);
-                    _robot->servos()[i+1]->set_angle(0, 0.0);
-                    _robot->servos()[i+2]->set_angle(0, 0.0);
+		  _robot->servos()[i]->set_angle(0,   0.0);
+		  _robot->servos()[i+1]->set_angle(0, 0.0);
+		  _robot->servos()[i+2]->set_angle(0, 0.0);
 
-                    ++leg;
+		  ++leg;
                 }
-                next_step();
+	      next_step();
             }
 
-            if(_robot->bodies()[0]->get_in_contact())
+	  if(_robot->bodies()[0]->get_in_contact())
             {
-                _covered_distance=-10002.0;
-                return;
+	      _covered_distance=-10002.0;
+	      return;
             }
         }
 
 
 
-        // calculating servo frequencies
+        // calculating servo frequencies 
         servo_frequencies_max = servo_frequency(t, duration);
     }
 
@@ -706,9 +703,9 @@ template<typename NN> float Simu<NN> :: timer(size_t leg, size_t servo, bool pre
     float duty_t;
 
     if ((t >= 0.0) && (t  <= duty_factor))
-        duty_t = t / (2.0 * duty_factor) ;
+            duty_t = t / (2.0 * duty_factor) ;
     else
-        duty_t = (t +  (1.0 - 2.0 * duty_factor)) / (2.0 * (1.0 - duty_factor));
+            duty_t = (t +  (1.0 - 2.0 * duty_factor)) / (2.0 * (1.0 - duty_factor));
 
     return duty_t;
 #endif
@@ -731,9 +728,9 @@ template<typename NN> float Simu<NN> :: timer(size_t leg, size_t servo, bool pre
     float duty_t;
 
     if ((t >= 0.0) && (t  <= duty_factor))
-        duty_t = t / (2.0 * duty_factor);
+            duty_t = t / (2.0 * duty_factor);
     else
-        duty_t = (t +  (1.0 - 2.0 * duty_factor)) / (2.0 * (1.0 - duty_factor));
+            duty_t = (t +  (1.0 - 2.0 * duty_factor)) / (2.0 * (1.0 - duty_factor));
 
     return duty_t;
 #endif
@@ -940,7 +937,7 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
     size_t n = 0;
     for (size_t leg = 0; leg < 6; ++leg)
     {
-        /*if(t <= _offset_time[leg][0])
+      /*if(t <= _offset_time[leg][0])
         {
             _prev_angles[leg][0] = _angles[leg][0];
             _angles[leg][0] = 0.0; // -ve leg turned ahead, +ve leg turned behind (for legs on right side of robot; vice-versa for left side legs)
@@ -1058,18 +1055,18 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
         rob->servos()[i+1]->set_angle(0, _angles[leg][1]);
         rob->servos()[i+2]->set_angle(0, _angles[leg][2]);
 
-        //        if(leg==2)
-        //        {
-        //            rob->servos()[i]->set_angle(0,   M_PI/8.0);
-        //            rob->servos()[i+1]->set_angle(0, -M_PI/4.0);
-        //            rob->servos()[i+2]->set_angle(0, M_PI/4.0);
-        //        }
-        //        else
-        //        {
-        //            rob->servos()[i]->set_angle(0,   0.0);
-        //            rob->servos()[i+1]->set_angle(0, 0.0);
-        //            rob->servos()[i+2]->set_angle(0, 0.0);
-        //        }
+//        if(leg==2)
+//        {
+//            rob->servos()[i]->set_angle(0,   M_PI/8.0);
+//            rob->servos()[i+1]->set_angle(0, -M_PI/4.0);
+//            rob->servos()[i+2]->set_angle(0, M_PI/4.0);
+//        }
+//        else
+//        {
+//            rob->servos()[i]->set_angle(0,   0.0);
+//            rob->servos()[i+1]->set_angle(0, 0.0);
+//            rob->servos()[i+2]->set_angle(0, 0.0);
+//        }
         ++leg;
     }
 

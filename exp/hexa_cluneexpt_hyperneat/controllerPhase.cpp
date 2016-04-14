@@ -8,7 +8,7 @@ std::vector<float>  ControllerPhase::moveRobot(robot_t& robot, float t, float st
     std::vector<float> param1(18, 0.0);
 
     /******************* Logs BEGIN *************************************/
-    size_t tmp_leg = 0;
+    /*size_t tmp_leg = 0;
     for(size_t funclastlegsegment = 3; funclastlegsegment < robot->bodies().size(); funclastlegsegment+=3)
     {
         for (int j=0;j<_brokenLegs.size();j++)
@@ -51,7 +51,7 @@ std::vector<float>  ControllerPhase::moveRobot(robot_t& robot, float t, float st
     ofs1 << std::endl;
     static std::ofstream leglogsfs(std::string("leglogs.dat").c_str());
     leglogsfs << t << " ";
-    for(size_t leg = 0; leg <= 2; ++leg) /* Warning: Code will break when legs are removed */
+    for(size_t leg = 0; leg <= 2; ++leg) // Warning: Code will break when legs are removed 
     {
         if(_prev_angles_actual[leg][0] == _angles_actual[leg][0]) // && _prev_angles_actual[leg][0] == 0
             leglogsfs << "0"  << " " << _contact[leg] << " ";  //std::cout << "NS";
@@ -69,7 +69,7 @@ std::vector<float>  ControllerPhase::moveRobot(robot_t& robot, float t, float st
         else if(_angles_actual[leg][0] < _prev_angles_actual[leg][0])
             leglogsfs << "+1"  << " " << _contact[leg] << " ";  //std::cout << "Stance phase" << std::endl;
     }
-    leglogsfs << std::endl;
+    leglogsfs << std::endl;*/
     /******************* Logs END *************************************/
 
 

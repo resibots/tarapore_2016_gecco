@@ -73,16 +73,18 @@ using namespace sferes::gen::evo_float;
 //#define AMPLITUDE_BD // using the amplitude behavior descriptor
 
 
+#define MutMultiplier (1.0f / 10.0f)   //  mutation rates reduced by one order of magnitude
+
 struct Params
 {
     struct ea
     {
 #ifdef AMPLITUDE_BD
-        SFERES_CONST size_t behav_dim = 3;
-        SFERES_ARRAY(size_t, behav_shape, 20, 20, 20);
+      SFERES_CONST size_t behav_dim = 3;
+      SFERES_ARRAY(size_t, behav_shape, 20, 20, 20);
 #else
-        SFERES_CONST size_t behav_dim = 6;
-        SFERES_ARRAY(size_t, behav_shape, 5, 5, 5, 5, 5, 5);
+      SFERES_CONST size_t behav_dim = 6;
+      SFERES_ARRAY(size_t, behav_shape, 5, 5, 5, 5, 5, 5);
 #endif
     };
     struct pop //Parameters of the population
@@ -92,7 +94,7 @@ struct Params
 
         // size of a batch - evaluations to be run in parallel. could be about 64 (number of cores on cluster).
         SFERES_CONST size_t size = 200; //200  was Using the same parameters as Antoine to compare results //64
-        SFERES_CONST size_t nb_gen = 200001; //100001; // number of evaluations is nb_gen * size of batch
+      SFERES_CONST size_t nb_gen = 25001; //200001; //100001; // number of evaluations is nb_gen * size of batch
 
         static constexpr int dump_period = 1000; //50  //logs are written every dump_period of 5001 generations
         static constexpr int dump_period_logs = 50; //50  //logs are written every dump_period of 5001 generations
@@ -104,16 +106,16 @@ struct Params
         struct sampled
         {
             SFERES_ARRAY(float, values, 0, 1, 2, 3, 4); //sine; sigmoid; gaussian; linear; copy/tanh (depending on if supg is constrained/not-constrained)
-            static constexpr float mutation_rate = 0.01f;
-            static constexpr float cross_rate = 0.25f;
+	  static constexpr float mutation_rate = 0.01f * MutMultiplier;;
+            static constexpr float cross_rate = 0.0;
             static constexpr bool ordered = false;
         };
         struct evo_float
         {
-            static constexpr float mutation_rate = 0.1f;//per conn mut rate
-            static constexpr float eta_m = 10.0f;  // perturbation of the order O(1/eta_m)
+            static constexpr float mutation_rate = 0.1f ;//per conn mut rate
+	    static constexpr float eta_m = 10.0f / MutMultiplier;;  // perturbation of the order O(1/eta_m)
 
-            static constexpr float cross_rate = 0.1f; //we don't use this
+            static constexpr float cross_rate = 0.0f; //we don't use this
             static constexpr mutation_t mutation_type = polynomial;
             static constexpr cross_over_t cross_over_type = sbx;
             static constexpr float eta_c = 10.0f; // A large value ef eta gives a higher probablitity for creating a `near-parent' solutions and a small value allows distant solutions to be selected as offspring.
@@ -137,11 +139,11 @@ struct Params
             //outputs: supg output and offset to timer and duty factor
             static constexpr size_t nb_outputs = 3;
             static constexpr init_t init = ff; //feedforward nn
-            static constexpr float m_rate_add_conn = 0.05f; //0.1f
-            static constexpr float m_rate_del_conn = 0.1f;
-            static constexpr float m_rate_change_conn = 0.0f; //move conn to new neurons
-            static constexpr float m_rate_add_neuron = 0.05f; //0.2f
-            static constexpr float m_rate_del_neuron = 0.01f;
+	  static constexpr float m_rate_add_conn = 0.05f* MutMultiplier;; //0.1f
+	  static constexpr float m_rate_del_conn = 0.1f* MutMultiplier;;
+	  static constexpr float m_rate_change_conn = 0.0f* MutMultiplier;; //move conn to new neurons
+	  static constexpr float m_rate_add_neuron = 0.05f* MutMultiplier;; //0.2f
+	  static constexpr float m_rate_del_neuron = 0.01f* MutMultiplier;;
 
             //these only count w/ random init, instead of feed forward
             static constexpr size_t min_nb_neurons = 6;
@@ -264,13 +266,13 @@ FIT_MAP(FitGrid)
     //sum of vector
     std::vector <float> sumsof2Dvector(std::vector <std::vector <float> >& v1)
     {
-        std::vector <float> vecsums(v1[0].size(),0);
+      std::vector <float> vecsums(v1[0].size(),0);
 
-        for (int o =0; o < v1.size(); o++)
-            for (int p =0; p < v1[o].size(); p++)
-                vecsums[p] += v1[o][p];
+      for (int o =0; o < v1.size(); o++)
+	for (int p =0; p < v1[o].size(); p++)
+	  vecsums[p] += v1[o][p];
 
-        return vecsums;
+      return vecsums;
     }
 
 
@@ -324,7 +326,7 @@ FIT_MAP(FitGrid)
 
 
 #if defined GRND_OBSTACLES || defined GRND_OBSTACLES_EVO
-        std::vector <std::vector <float> > noobstacles;
+	std::vector <std::vector <float> > noobstacles;
         float floorangle=0.0;
         Simu <typename Indiv::gen_t> simu(indiv.gen(), global::robot, global::brokenLegs, 5.0, noobstacles, floorangle);
 #else
@@ -352,10 +354,10 @@ FIT_MAP(FitGrid)
             this->_value = -1000.0f;
 
 #ifdef AMPLITUDE_BD
-            std::vector<float> data = {0.0f, 0.0f, 0.0f};
+	    std::vector<float> data = {0.0f, 0.0f, 0.0f};
             this->set_desc(data);
 #else
-            std::vector<float> data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+	    std::vector<float> data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
             this->set_desc(data);
 #endif
         }
@@ -381,63 +383,63 @@ FIT_MAP(FitGrid)
 
 #ifdef AMPLITUDE_BD
             float MAX_AMPLITUDE = 0.20f; //max range of 20 cm
-            std::vector<float> data = {std::min(simu.amp_x / MAX_AMPLITUDE, 1.0f),
+	    std::vector<float> data = {std::min(simu.amp_x / MAX_AMPLITUDE, 1.0f),
                                        std::min(simu.amp_y / MAX_AMPLITUDE, 1.0f),
                                        std::min(simu.amp_z / MAX_AMPLITUDE, 1.0f)};
 #else
             /*==========Duty factor behavior descriptor ============ */
-            //std::vector<float> data = {(float)round((sumofvector(legs_features[0]) / (float)legs_features[0].size()) * 100.0f) / 100.0f,
-            //			       (float)round((sumofvector(legs_features[1]) / (float)legs_features[1].size()) * 100.0f) / 100.0f,
-            //			       (float)round((sumofvector(legs_features[2]) / (float)legs_features[2].size()) * 100.0f) / 100.0f,
-            //			       (float)round((sumofvector(legs_features[3]) / (float)legs_features[3].size()) * 100.0f) / 100.0f,
-            //			       (float)round((sumofvector(legs_features[4]) / (float)legs_features[4].size()) * 100.0f) / 100.0f,
-            //			       (float)round((sumofvector(legs_features[5]) / (float)legs_features[5].size()) * 100.0f) / 100.0f};
+	    /*std::vector<float> data = {(float)round((sumofvector(legs_features[0]) / (float)legs_features[0].size()) * 100.0f) / 100.0f,
+	    			       (float)round((sumofvector(legs_features[1]) / (float)legs_features[1].size()) * 100.0f) / 100.0f,
+	    			       (float)round((sumofvector(legs_features[2]) / (float)legs_features[2].size()) * 100.0f) / 100.0f,
+	    			       (float)round((sumofvector(legs_features[3]) / (float)legs_features[3].size()) * 100.0f) / 100.0f,
+	    			       (float)round((sumofvector(legs_features[4]) / (float)legs_features[4].size()) * 100.0f) / 100.0f,
+	    			       (float)round((sumofvector(legs_features[5]) / (float)legs_features[5].size()) * 100.0f) / 100.0f}; */
             /*========================================================*/
 
 
             /*==========Orientation behavior descriptor ============ */
             //            using main body orientation behavior descriptor
-            //            float perc_threshold = 0.5f; // > +perc_threshold is considered +ve // < -perc_threshold is considered -ve
-            //            std::vector<float> data = simu.get_orientation_bd(perc_threshold);
+            /*            float perc_threshold = 0.5f; // > +perc_threshold is considered +ve // < -perc_threshold is considered -ve
+			  std::vector<float> data = simu.get_orientation_bd(perc_threshold);*/
             /*========================================================*/
 
 
 
             /*==========Relative GRF behavior descriptor ============ */
-            std::vector <float> grf_eachleg = sumsof2Dvector(simu.grf_z);
+	    std::vector <float> grf_eachleg = sumsof2Dvector(simu.grf_z);
             assert(grf_eachleg.size() == 6);
 
             float total_force = sumofvector(grf_eachleg);
             float total_force_y = sumofvector(sumsof2Dvector(simu.grf_y));
             float total_force_x = sumofvector(sumsof2Dvector(simu.grf_x));
 
-            if(isnan(total_force) || isnan(total_force_x) || isnan(total_force_y) || total_force > 1.0e+5 || std::min(grf_eachleg[0],grf_eachleg[1]) < -0.1 || std::min(grf_eachleg[2],grf_eachleg[3]) < -0.1 || std::min(grf_eachleg[4],grf_eachleg[5]) < -0.1)
-                // the z component of the GRF sometimes takes very small negative values. if the negative value is too large the leg maybe penetrating the ground. so we kill the individual. // in rare cases we get a NaN for the x and y component of the GRF. We catch it here
-            {
-                _dead=true;
-                _behavior.position.resize(2);
-                _behavior.position[0]=0.0;
-                _behavior.position[1]=0.0;
-                _behavior.performance = -1000.0;
-                _behavior.arrivalangle = -1000.0;
-                _behavior.direction = -1000.0;
+            if(isnan(total_force) || isnan(total_force_x) || isnan(total_force_y) || total_force > 1.0e+5 || std::min(grf_eachleg[0],grf_eachleg[1]) < -0.1 || std::min(grf_eachleg[2],grf_eachleg[3]) < -0.1 || std::min(grf_eachleg[4],grf_eachleg[5]) < -0.1) 
+	    // the z component of the GRF sometimes takes very small negative values. if the negative value is too large the leg maybe penetrating the ground. so we kill the individual. // in rare cases we get a NaN for the x and y component of the GRF. We catch it here
+	      {
+		_dead=true;
+		_behavior.position.resize(2);
+		_behavior.position[0]=0.0;
+		_behavior.position[1]=0.0;
+		_behavior.performance = -1000.0;
+		_behavior.arrivalangle = -1000.0;
+		_behavior.direction = -1000.0;
 
-                this->_value = -1000.0f;
+		this->_value = -1000.0f;
 
-                std::vector<float> data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-                this->set_desc(data);
-                return;
-            }
+		std::vector<float> data = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+		this->set_desc(data);
+		return;
+	      }
 
-            float rel_grd_0 = std::max(grf_eachleg[0] / total_force, 0.0f); // the z component of the GRF sometimes takes very small negative values (< 0.01)
-            float rel_grd_1 = std::max(grf_eachleg[1] / total_force, 0.0f);
-            float rel_grd_2 = std::max(grf_eachleg[2] / total_force, 0.0f);
-            float rel_grd_3 = std::max(grf_eachleg[3] / total_force, 0.0f);
-            float rel_grd_4 = std::max(grf_eachleg[4] / total_force, 0.0f);
-            float rel_grd_5 = std::max(grf_eachleg[5] / total_force, 0.0f);
+             float rel_grd_0 = std::max(grf_eachleg[0] / total_force, 0.0f); // the z component of the GRF sometimes takes very small negative values (< 0.01)
+             float rel_grd_1 = std::max(grf_eachleg[1] / total_force, 0.0f);
+             float rel_grd_2 = std::max(grf_eachleg[2] / total_force, 0.0f);
+             float rel_grd_3 = std::max(grf_eachleg[3] / total_force, 0.0f);
+             float rel_grd_4 = std::max(grf_eachleg[4] / total_force, 0.0f);
+             float rel_grd_5 = std::max(grf_eachleg[5] / total_force, 0.0f);
 
 
-            std::vector<float> data = {rel_grd_0, rel_grd_1, rel_grd_2, rel_grd_3, rel_grd_4, rel_grd_5};
+	     std::vector<float> data = {rel_grd_0, rel_grd_1, rel_grd_2, rel_grd_3, rel_grd_4, rel_grd_5};
             /*========================================================*/
 #endif
 
@@ -446,30 +448,29 @@ FIT_MAP(FitGrid)
             _behavior.performance = simu.covered_distance();
             //this->_value   = _behavior.performance;
 
-            if (floor(this->servo_frequencies_max) >= 1.99999f)
-                this->_value   = _behavior.performance / floor(this->servo_frequencies_max);
-            else
-                this->_value   = _behavior.performance;
+	    if (floor(this->servo_frequencies_max) >= 1.99999f)
+	      this->_value   = _behavior.performance / floor(this->servo_frequencies_max);
+	      else 
+	    this->_value   = _behavior.performance;
 
             _behavior.direction = round(this->_direction * 100) / 100.0f; //two decimal places
         }
 
         if(this->mode() == sferes::fit::mode::view)
         {
-	  std::cout << " _behavior.performance " << _behavior.performance << " _behavior.performance / floor(this->servo_frequencies_max) " << _behavior.performance / floor(this->servo_frequencies_max) << std::endl;
-	  std::cout << " this->dist " << this->dist << std::endl; 
-            std::cout << " _direction " << _behavior.direction << std::endl;
-            std::cout << " frequency " << simu.servo_frequencies_max  << " floor(frequency) " << floor(simu.servo_frequencies_max) << std::endl;
+	  std::cout << " _behavior.performance " << _behavior.performance << std::endl;
+	  std::cout << " _direction " << _behavior.direction << std::endl;
+	  std::cout << " frequency " << simu.servo_frequencies_max << std::endl;
 
-            std::cout << std::endl << " Descriptor:  ";
-            for(size_t bd_index=0;bd_index<6;++bd_index)
-                std::cout  << this->desc()[bd_index] << " ";
-            std::cout  << std::endl;
+	  std::cout << std::endl << " Descriptor:  ";
+	  for(size_t bd_index=0;bd_index<6;++bd_index)
+	    std::cout  << this->desc()[bd_index] << " ";
+	  std::cout  << std::endl;
 
-            static std::ofstream ofs(std::string("performance_metrics.dat").c_str());
-            ofs << _behavior.performance << std::endl;
-            ofs << _behavior.direction << std::endl;
-            ofs.close();
+	  static std::ofstream ofs(std::string("performance_metrics.dat").c_str());
+	  ofs << _behavior.performance << std::endl;
+	  ofs << _behavior.direction << std::endl;
+	  ofs.close();
         }
     }
 };

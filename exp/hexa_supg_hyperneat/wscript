@@ -4,19 +4,10 @@ import sferes
 def build(bld):
     osg = not bld.all_envs['default']['NO_OSG']
     #libs = 'EIGEN2 ROBDYN BOOST ODE BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM ROS DYNAMIXEL IMU_RAZOR '
-    libs = 'EIGEN3 ROBDYN  BOOST BOOST_TIMER ODE BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM ROS DYNAMIXEL IMU_RAZOR ROS BAYESIAN_OPTIMIZATION BOOST_CHRONO RT'
+    libs = 'EIGEN2 ROBDYN  BOOST BOOST_TIMER ODE BOOST_SYSTEM BOOST_THREAD BOOST_SERIALIZATION BOOST_FILESYSTEM ROS DYNAMIXEL IMU_RAZOR ROS BAYESIAN_OPTIMIZATION BOOST_CHRONO RT'
     cxxflags = bld.get_env()['CXXFLAGS']
     if osg:
         libs += ' OSG'
-
-
-    modelg = bld.new_task_gen('cxx', 'staticlib')
-    modelg.source = 'hexapod.cc '
-    modelg.includes = '. ../../'
-    modelg.target = 'hexapodg'
-    modelg.uselib = libs
-    modelg.cxxflags = cxxflags = ['-DGRAPHIC' ]
-
 
     model = bld.new_task_gen('cxx', 'staticlib')
     model.source = 'hexapod.cc '
@@ -25,13 +16,15 @@ def build(bld):
     model.uselib = libs
 
 
+
     sferes.create_variants(bld,
                            source = 'hexa_supg_hyperneat.cpp',
                            uselib_local = 'sferes2 hexapod',# robot',
                            uselib = libs,
                            target = 'hexa_supg_hyperneat',
                            json = '',
-                           variants = ['NOFEEDBACK TEXT','TEXT', 'ORIENTFB TEXT']) # 
+                           variants = ['NOFEEDBACK TEXT','TEXT','ORIENTFB TEXT','NOFEEDBACK ORIENTFB TEXT'])
+
 
 
     sferes.create_variants(bld,
@@ -40,41 +33,19 @@ def build(bld):
                            uselib = libs,
                            target = 'supg_mapelite',
                            json = '',
-                           variants = ['NOFEEDBACK TEXT','TEXT']) #
+                           #variants = ['CORRIDORFIT NOFEEDBACK TEXT','CORRIDORFIT TEXT',    'NOFEEDBACK TEXT','TEXT',     'ORIENTFB TEXT'])#, 'ROBOT'])
+                           #variants = ['CORRIDORFIT NOFEEDBACK TEXT','CORRIDORFIT TEXT',    'NOFEEDBACK TEXT','TEXT'])#, 'ROBOT'])
+                           variants = ['NOFEEDBACK TEXT','TEXT'])#, 'ROBOT'])
+
 
 
     sferes.create_variants(bld,
                            source = 'hexa_bomean.cpp',
-                           uselib_local = 'sferes2 hexapod',# robot',
+                           uselib_local = 'sferes2 hexapod',
                            uselib = libs,
                            target = 'hexa_bomean',
                            json = '',
-                           variants = ['SIMU TEXT', 'SIMU NOSTOP TEXT', 'NOFEEDBACK SIMU TEXT', 'NOFEEDBACK SIMU NOSTOP TEXT'])
+                           #variants = ['CORRIDORFIT SIMU','CORRIDORFIT SIMU NOSTOP','CORRIDORFIT NOFEEDBACK SIMU','CORRIDORFIT NOFEEDBACK SIMU NOSTOP',   'SIMU','SIMU NOSTOP',     'NOFEEDBACK SIMU','NOFEEDBACK SIMU NOSTOP'])
+                           variants = ['SIMU','SIMU NOSTOP',   'NOFEEDBACK SIMU','NOFEEDBACK SIMU NOSTOP'])
+                           #variants = ['ROBOT'])
 
-
-    if osg:
-        print 'osg activated'
-        sferes.create_variants(bld,
-                           source = 'hexa_supg_hyperneat.cpp',
-                           uselib_local = 'sferes2 hexapodg ',
-                           uselib = libs,
-                           target = 'hexa_supg_hyperneat',
-                           json = '',
-                           variants = ['GRAPHIC'])
-                           # variants = ['NOFEEDBACK GRAPHIC','GRAPHIC','ORIENTFB GRAPHIC', 'NOFEEDBACK ORIENTFB GRAPHIC'])
-
-        sferes.create_variants(bld,
-                           source = 'supg_mapelite.cpp',
-                           uselib_local = 'sferes2 hexapodg ',
-                           uselib = libs,
-                           target = 'supg_mapelite',
-                           json = '',
-                           variants = ['NOFEEDBACK GRAPHIC','GRAPHIC'])
-
-        sferes.create_variants(bld,
-                           source = 'hexa_bomean.cpp',
-                           uselib_local = 'sferes2 hexapodg',# robot',
-                           uselib = libs,
-                           target = 'hexa_bomean',
-                           json = '',
-                           variants = ['SIMU GRAPHIC','NOFEEDBACK SIMU GRAPHIC'])
