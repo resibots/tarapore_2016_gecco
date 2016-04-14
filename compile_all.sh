@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -x
+set -x # verbose
+set -e # stop on errors
+
 INSTALL="$(realpath install)"
 echo "Install directory: ${INSTALL}"
 NO_OSG=yes
@@ -10,6 +12,7 @@ echo "INSTALL: $INSTALL"
 echo "NO_OSG: $NO_OSG"
 echo "OSG: $OSG"
 
+rm -rf install
 mkdir install
 
 #### robdyn
@@ -28,7 +31,9 @@ cd ..
 echo "robdyn" > modules.conf
 
 CXXFLAGS='-fpermissive' ./waf configure --cpp11=yes --boost-libs=/usr/lib/x86_64-linux-gnu/ --robdyn=$INSTALL --eigen=/usr/include/eigen3
-
 ./waf
-
+./waf --exp hexa_cluneexpt_hyperneat
+./waf --exp hexa_coupledcpgwithfb_hyperneat
+./waf --exp hexa_duty_cycle
+./waf --exp hexa_supg_hyperneat
 
